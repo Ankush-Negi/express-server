@@ -1,5 +1,5 @@
 arg = process.argv[2]
-if (arg < 2 || arg >= 10 {
+if (arg < 2 || arg >= 10) {
     console.log('Please enter value between 2 and 10');
     return;
 }
