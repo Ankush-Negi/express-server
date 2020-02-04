@@ -1,3 +1,7 @@
+let validId = [];
+let invalidId = [];
+let validCount = 0;
+let invalidCount = 0;
 let users = 
 [
     {
@@ -12,12 +16,7 @@ let users =
         traineeEmail: 'trainee1successive.tech',
         reviewerEmail: 'reviewer1@successive.tech'
     }
-]
-
-let validCount = 0;
-let invalidCount = 0;
-
-
+];
 function validateEmail(email){
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     if (reg.test(email) == false) 
@@ -29,40 +28,24 @@ function validateEmail(email){
     }
 
 }
-
-
-
-
-function validateUsers(users){
-    const validId=[];
-    const invalidId=[];
-    for(var i=0; i < users.length; i++) {
-        const {traineeEmail,reviewerEmail} = users[i];
+function validateUsers(user){
+        const {traineeEmail,reviewerEmail} = user;
         if(validateEmail(traineeEmail) && validateEmail(reviewerEmail)){
             validCount = validCount + 1;
-            validId.push([traineeEmail,reviewerEmail]);
+            validId.push([traineeEmail, reviewerEmail]);
         }
         else{
             invalidCount = invalidCount + 1;
             invalidId.push([traineeEmail,reviewerEmail]);
         }
 
-
-    }   
-    console.log("Valid Emails are:");
-    for(i=0; i< validId.length; i++){
-        console.log((i+1) + ". " + validId[i] );
-    }
-    console.log("Invalid Emails are:");
-    for(i=0; i< invalidId.length; i++){
-        console.log((i+1) + ". " + invalidId[i]);
-        }
-
-
+        
     }
 
-validateUsers(users);
-
-
-
-
+users.forEach(validateUsers);
+console.log("Valid Emails are:");
+console.log(validId);
+console.log("Count: " + validCount);
+console.log("Invalid Emails are:");    
+console.log(invalidId);
+console.log("Count: " + invalidCount);
