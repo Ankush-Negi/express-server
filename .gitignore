@@ -1,0 +1,7 @@
+// to ignore files to upload in git repository
+
+
+node_modules
+
+
+package-lock.json
