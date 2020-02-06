@@ -4,11 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "extra:diamond":"node ~/Desktop/Node JS/workspace/express-server/extra/patterns/diamond.js",
-    "extra:equilateral":"node ~/Desktop/Node JS/workspace/express-server/extra/patterns/equilateral.js",
+    "extra:diamond": "node ~/Desktop/Node JS/workspace/express-server/extra/patterns/diamond.js",
+    "extra:equilateral": "node ~/Desktop/Node JS/workspace/express-server/extra/patterns/equilateral.js",
+    "extra": "npx babel-node extra",
+    "start:extra": "babel-node extra",
+    "start:extraTs": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
+    "nodemon": "nodemon ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "extra": "npx babel-node extra"
-  },
+    "lint": "./node_modules/tslint/bin/tslint -c tslint.json -p tsconfig.json --exclude 'node_modules/**/*.{j,t}s'",
+    "lint:fix": "npm run lint --fix"
+    },
+    "husky": {
+      "hooks": {
+        "pre-commit": "npm run lint",
+        "pre-push": "npm run lint",
+        "...": "..."
+      }
+    },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ankush-Negi/express-server.git"
@@ -22,6 +34,11 @@
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/node": "^7.8.4",
-    "@babel/preset-env": "^7.8.4"
+    "@babel/preset-env": "^7.8.4",
+    "commitizen": "^4.0.3",
+    "husky": "^4.2.1",
+    "tsc-watch": "^4.1.0",
+    "tslint": "^6.0.0",
+    "typescript": "^3.7.5"
   }
 }

@@ -14,8 +14,8 @@ export default function validateUsers(user){
             invalidId.push([traineeEmail,reviewerEmail]);
         }   
     }); 
-    console.log(':::::::::::Valid Users:::::::::::\n',validId);
-    console.log('Count : ',validId.length);
-    console.log(':::::::::::Invalid Users:::::::::::\n',invalidId);
-    console.log('Count : ',invalidId.length);    
+    console.log(':::::::::::::::::::::::::Valid Users:::::::::::::::::::::::::::\n\n',validId);
+    console.log('Count : '+validId.length+'\n\n');
+    console.log(':::::::::::::::::::::::::Invalid Users:::::::::::::::::::::::\n',invalidId);
+    console.log('Count : '+invalidId.length+'\n\n');    
 }

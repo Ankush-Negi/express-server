@@ -5,5 +5,5 @@
     write : ['trainer'],
     delete: ['head-trainer','trainer'],
         }   
-    }
-export {permissions};
+    } 
+export{ permissions };
