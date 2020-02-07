@@ -27,4 +27,5 @@ else{
     console.log(str);
   }
 }
+console.log('\n');
 }

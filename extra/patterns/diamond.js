@@ -17,4 +17,5 @@ for (var i = 0; i < arg; i++) {
     console.log(str);
   }
 }
+console.log('\n');
 }
