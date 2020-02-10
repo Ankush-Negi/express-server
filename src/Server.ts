@@ -2,13 +2,18 @@ import IConfig from './config/IConfig';
 import * as express from 'express';
 
 export default class Server {
-    app: express.Application;
+    app: express.Express;
     constructor( private config: IConfig) {
         this.app = express();
     }
+
+    getApplication = () => {
+        return this.app;
+    }
+
     bootstrap = () => {
         this.setupRoutes();
-        return this;
+        return this.app;
     }
 
     run = () => {
@@ -23,8 +28,8 @@ export default class Server {
     }
 
     setupRoutes = () => {
-        this.app.get('/health-check', ( req, res) => {
-            res.send(':::::::::::SUCCESS::::::::::::');
+        this.app.use('/health-check', ( req, res) => {
+            res.send('I am OK.');
             return this;
         });
     }

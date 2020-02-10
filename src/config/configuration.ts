@@ -3,10 +3,10 @@ import { config } from 'dotenv';
 
 config();
 
-const configuration: IConfig = {
-    port : process.env.PORT,
-    env: process.env.NODE_ENV
-};
-Object.freeze(config);
+const { PORT, NODE_ENV } = process.env;
+const configuration: IConfig = Object.freeze ({
+    port : PORT,
+    env: NODE_ENV
+});
 
 export default configuration;
