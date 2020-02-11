@@ -3,6 +3,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import errHandler from './libs/routes/errorHandler';
 import notFoundRoute from './libs/routes/notFoundRoute';
+import {default as router} from './router';
 
 export default class Server {
 
@@ -41,8 +42,8 @@ export default class Server {
         this.app.use('/health-check', ( req, res) => {
             res.send('I am OK.');
         });
+        this.app.use('/api', router);
         return this;
 
     }
-
 }
