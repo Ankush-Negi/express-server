@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+
 class UserController{
 
     static instance: UserController;
@@ -11,59 +12,89 @@ class UserController{
     return UserController.instance;
     }
     create = (req: Request,res:Response)=>{
-        res.send({
-            status: 'OK',
-            message: 'User added successfully',
-            data:{
-                id: 1,
-                name: 'Ankush',
-                address: 'Delhi'
-            }
-        });
+        const { id, name} = req.body;
+        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
+            console.log({id}, {name});
+            res.send({
+                status: 'OK',
+                message: 'User added successfully',
+                data: {id, name}
+            });
+        }
+        else{
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+             }
+        }
     }
     delete = (req:Request, res:Response) => {
-        res.send({
-            status: 'OK',
-            message: 'User deleted successfully',
-            data:{
-                id: 1,
-                name: 'Ankush',
-                address: 'Delhi'
-            }
-        });
+        const { id, name} = req.body;
+        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
+            console.log({id}, {name});
+            res.send({
+                status: 'OK',
+                message: 'User deleted successfully',
+                data: {id, name}
+            });
+        }
+        else{
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+             }
+        }
     }
     update = (req:Request, res:Response) => {
-        res.send({
-            status: 'OK',
-            message: 'User updated successfully',
-            data:{
-                id: 1,
-                name: 'Ankush',
-                address: 'Delhi'
-            }
-        });
+        const { id, name} = req.body;
+        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
+            console.log({id}, {name});
+            res.send({
+                status: 'OK',
+                message: 'User updated successfully',
+                data: {id, name}
+            });
+        }
+        else{
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+             }
+        }
     }
-    findAll = (req:Request, res:Response) => {
-        res.send({
-            status: 'OK',
-            message: 'User list is: \n',
-            data:{
-                id: 1,
-                name: 'Ankush',
-                address: 'Delhi'
-            }
-        });
+    getAll = (req:Request, res:Response) => {
+        const { id, name} = req.body;
+        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
+            console.log({id}, {name});
+            res.send({
+                status: 'OK',
+                message: 'List of all users',
+                data: {id, name}
+            });
+        }
+        else{
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+             }
+        }
     }
-    findOne = (req:Request, res:Response) => {
-        res.send({
-            status: 'OK',
-            message: 'User found :\n',
-            data:{
-                id: 1,
-                name: 'Ankush',
-                address: 'Delhi'
-            }
-        });
+    getById = (req:Request, res:Response) => {
+        const { id, name} = req.body;
+        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
+            console.log({id}, {name});
+            res.send({
+                status: 'OK',
+                message: 'User found',
+                data: {id, name}
+            });
+        }
+        else{
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+             }
+        }
     }
 
 }

@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+
 class TraineeController{
 
     static instance;
@@ -11,61 +12,89 @@ class TraineeController{
     return TraineeController.instance;
     }
     create = (req: Request,res:Response)=>{
-        res.send({
-            status: 'OK',
-            message: 'trainee added successfully',
-            data:{
-                id: 1,
-                name: 'Ankush',
-                address: 'Delhi'
-            }
-        });
+        const { id, name} = req.body;
+        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
+            console.log({id}, {name});
+            res.send({
+                status: 'OK',
+                message: 'Trainee added successfully',
+                data: {id, name}
+            });
+        }
+        else{
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+             }
+        }
     }
     delete = (req:Request, res:Response) => {
-        res.send({
-            status: 'OK',
-            message: 'trainee deleted successfully',
-            data:{
-                id: 1,
-                name: 'Ankush',
-                address: 'Delhi'
-            }
-        });
+        const { id, name} = req.body;
+        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
+            console.log({id}, {name});
+            res.send({
+                status: 'OK',
+                message: 'Trainee deleted successfully',
+                data: {id, name}
+            });
+        }
+        else{
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+             }
+        }
     }
     update = (req:Request, res:Response) => {
-        res.send({
-            status: 'OK',
-            message: 'trainee updated successfully',
-            data:{
-                id: 1,
-                name: 'Ankush',
-                address: 'Delhi'
-            }
-        });
+        const { id, name} = req.body;
+        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
+            console.log({id}, {name});
+            res.send({
+                status: 'OK',
+                message: 'Trainee updated successfully',
+                data: {id, name}
+            });
+        }
+        else{
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+             }
+        }
     }
-    findAll = (req:Request, res:Response) => {
-        console.log(':::::::::::Inside FindAll trainee::::::::::::::');
-        res.send({
-            status: 'OK',
-            message: 'trainee list is: \n',
-            data:{
-                id: 1,
-                name: 'Ankush',
-                address: 'Delhi'
-            }
-        });
+    getAll = (req:Request, res:Response) => {
+        const { id, name} = req.body;
+        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
+            console.log({id}, {name});
+            res.send({
+                status: 'OK',
+                message: 'Trainee list : ',
+                data: {id, name}
+            });
+        }
+        else{
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+             }
+        }
     }
-    findOne = (req:Request, res:Response) => {
-        console.log(':::::::::::Inside FindOne trainee::::::::::::::');
-        res.send({
-            status: 'OK',
-            message: 'trainee found :\n',
-            data:{
-                id: 1,
-                name: 'Ankush',
-                address: 'Delhi'
-            }
-        });
+    getById = (req:Request, res:Response) => {
+        const { id, name} = req.body;
+        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
+            console.log({id}, {name});
+            res.send({
+                status: 'OK',
+                message: 'Trainee Found',
+                data: {id, name}
+            });
+        }
+        else{
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+             }
+        }
     }
 
 }
