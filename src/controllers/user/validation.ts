@@ -16,7 +16,7 @@ export const validation = {
         name: {
             required: true,
             string: true,
-            regex: '/^[A-Za-z]+\s+[a-zA-Z]+$/',
+            regex: /^[A-Za-z]+\s+[a-zA-Z]+$/,
             in: ['body'],
             errorMessage: 'Name is required',
         }

@@ -1,5 +1,4 @@
 import {Request, Response, NextFunction} from 'express';
-import errHandler from './errorHandler';
 export default (validateHandler) => (req: Request,res: Response,next: NextFunction) => {
 
     const errArr: string[] = [];
