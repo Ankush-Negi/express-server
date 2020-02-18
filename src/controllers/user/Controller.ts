@@ -13,7 +13,7 @@ class UserController{
     }
     create = (req: Request,res:Response)=>{
         const { id, name} = req.body;
-        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
+        if((typeof(id) === 'string') &&  (typeof(name) === 'string')){
             console.log({id}, {name});
             res.send({
                 status: 'OK',
