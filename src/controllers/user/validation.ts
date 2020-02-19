@@ -1,4 +1,4 @@
-export const validation = {
+export const validation = Object.freeze ({
     create: {
         id: {
             required: true,
@@ -61,4 +61,4 @@ export const validation = {
             },
         }
     }
-}
+});
