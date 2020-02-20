@@ -4,6 +4,7 @@ import * as bodyParser from 'body-parser';
 import errHandler from './libs/routes/errorHandler';
 import notFoundRoute from './libs/routes/notFoundRoute';
 import router from './router';
+import Database from './libs/Database';
 
 export default class Server {
 
@@ -19,16 +20,18 @@ export default class Server {
     }
 
     run = () => {
-        const{app, config: { port , env } } = this;
+        const{app, config: { port , mongoURL } } = this;
+        Database.open(mongoURL).then(() => {
         app.listen(port, (err) => {
             if (err) {
                 throw err;
             }
-            console.log('App is running successfully at ', port, env);
+            console.log('App is running successfully at ', port);
         });
         app.use(notFoundRoute);
         app.use(errHandler);
         return this;
+        });
     }
 
     initBodyParser = () => {
