@@ -11,13 +11,17 @@ export default (validateHandler) => (req: Request,res: Response,next: NextFuncti
         const input = values[0];
         function checkRequire(input){
             if(keyData.hasOwnProperty('required')){
-                if(input){
-                    console.log(typeof(input));
-                    return true;
+                if(keyData.required){
+                    if(input){
+                        return true;
+                    }
+                    else{
+                        errArr.push(`${key} is required`);
+                        return false;
+                    }
                 }
-                else{
-                    errArr.push(`${key} is required`);
-                    return false;
+                if(!keyData.required){
+                    return true;
                 }
             }
             else{
