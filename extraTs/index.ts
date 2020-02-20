@@ -1,6 +1,5 @@
 import { IUsers } from './interfaces';
 import { diamond, equilateral } from './patterns';
-import { permissions } from './constants';
 import { hasPermission, validateUsers } from './utils';
 
 const users: IUsers[] =
@@ -23,7 +22,6 @@ diamond(6);
 equilateral(4);
 
 validateUsers(users);
-
-console.log(hasPermission(permissions.getUsers, 'trainee', 'read'));
-console.log(hasPermission(permissions.getUsers, 'trainee', 'all'));
-console.log(hasPermission(permissions.getUsers, 'trainer', 'write'));
+console.log(hasPermission('getUsers', 'trainee', 'read'));
+console.log(hasPermission('getUsers', 'trainee', 'all'));
+console.log(hasPermission('getUsers', 'trainer', 'write'));

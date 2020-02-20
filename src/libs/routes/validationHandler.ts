@@ -148,8 +148,6 @@ export default (validateHandler) => (req: Request,res: Response,next: NextFuncti
     });
     if(errArr.length){
         errArr.forEach(element => console.log(element));
-        //throw new Error(`${errArr}`);
-        // new errHandler(errArr);
         next(errArr);
     }
     else{
