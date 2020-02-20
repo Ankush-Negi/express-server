@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
-function errHandler(err:Error | String[], req: Request, res: Response, next: NextFunction){
+function errHandler(err, req: Request, res: Response, next: NextFunction){
     if(Array.isArray(err)){
         const errArr = [];
         err.forEach(element => {
@@ -13,11 +13,12 @@ function errHandler(err:Error | String[], req: Request, res: Response, next: Nex
         res.send(errArr);
     }
     else{
-        const errorHandler = {
-            error: err.message,
-            message: "error",
-            status: 500,
-            timestamp: new Date()
+    const {error,message,status} = err;
+    const errorHandler = {
+        error: error || 'Not Found',
+        message: message || 'Error',
+        status: status || 500,
+        timestamp: new Date()
         }
     res.send(errorHandler);
     }
