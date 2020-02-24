@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import seedData from './seedData';
 
 export default class Database{
     static open = (mongoURL: string) => {
@@ -14,6 +15,8 @@ export default class Database{
                 }
                 else{
                     resolve();
+                    seedData();
+
                     console.log("Successful connection with mongooseDB ");
                 }
             });
