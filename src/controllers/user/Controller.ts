@@ -1,4 +1,5 @@
-import {Request, Response} from 'express';
+import { Response, NextFunction} from 'express';
+import IRequest from '../../libs/routes/IRequest';
 
 class UserController{
 
@@ -11,89 +12,16 @@ class UserController{
     }
     return UserController.instance;
     }
-    create = (req: Request,res:Response)=>{
-        const { id, name} = req.body;
-        if((typeof(id) === 'string') &&  (typeof(name) === 'string')){
-            console.log({id}, {name});
-            res.send({
-                status: 'OK',
-                message: 'User added successfully',
-                data: {id, name}
-            });
+
+    me = (req: IRequest, res: Response, next: NextFunction) => {
+        try{
+            res.send(req.user);
         }
-        else{
-            throw {
-                error: 'Error Occured',
-                message: 'Type of the entered data is not valid'
-             }
-        }
-    }
-    delete = (req:Request, res:Response) => {
-        const { id, name} = req.body;
-        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
-            console.log({id}, {name});
-            res.send({
-                status: 'OK',
-                message: 'User deleted successfully',
-                data: {id, name}
-            });
-        }
-        else{
-            throw {
-                error: 'Error Occured',
-                message: 'Type of the entered data is not valid'
-             }
-        }
-    }
-    update = (req:Request, res:Response) => {
-        const { id, name} = req.body;
-        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
-            console.log({id}, {name});
-            res.send({
-                status: 'OK',
-                message: 'User updated successfully',
-                data: {id, name}
-            });
-        }
-        else{
-            throw {
-                error: 'Error Occured',
-                message: 'Type of the entered data is not valid'
-             }
-        }
-    }
-    getAll = (req:Request, res:Response) => {
-        const { id, name} = req.body;
-        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
-            console.log({id}, {name});
-            res.send({
-                status: 'OK',
-                message: 'List of all users',
-                data: {id, name}
-            });
-        }
-        else{
-            throw {
-                error: 'Error Occured',
-                message: 'Type of the entered data is not valid'
-             }
-        }
-    }
-    getById = (req:Request, res:Response) => {
-        const { id, name} = req.body;
-        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
-            console.log({id}, {name});
-            res.send({
-                status: 'OK',
-                message: 'User found',
-                data: {id, name}
-            });
-        }
-        else{
-            throw {
-                error: 'Error Occured',
-                message: 'Type of the entered data is not valid'
-             }
+        catch(err){
+            return next({
+                error: err,
+                message: err
+            })
         }
     }
 
