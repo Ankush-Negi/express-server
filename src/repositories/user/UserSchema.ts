@@ -1,9 +1,10 @@
-import * as mongoose from "mongoose";
+import VersionableSchema from '../versionable/VersionableSchema';
 
-export default class UserSchema extends mongoose.Schema{
-    constructor (options: any){
+export default class UserSchema extends VersionableSchema {
+    constructor(options: any) {
         const userSchema = {
-            _id: String,
+            // _id: String,
+            // originalId: String,
             email: String,
             name: String,
             role: String,
@@ -13,6 +14,6 @@ export default class UserSchema extends mongoose.Schema{
             hobbies: [String],
             password: String
         };
-        super(userSchema,options);
+        super(userSchema, options);
     }
 }

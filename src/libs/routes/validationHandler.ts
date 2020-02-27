@@ -1,5 +1,5 @@
-import {Request, Response, NextFunction} from 'express';
-export default (validateHandler) => (req: Request,res: Response,next: NextFunction) => {
+import { Request, Response, NextFunction } from 'express';
+export default (validateHandler) => (req: Request, res: Response, next: NextFunction) => {
 
     const errArr: string[] = [];
     const configKey = Object.keys(validateHandler);
@@ -9,156 +9,154 @@ export default (validateHandler) => (req: Request,res: Response,next: NextFuncti
             return req[location][key];
         });
         const input = values[0];
-        console.log(input);
-        function checkRequire(input){
-            if(keyData.hasOwnProperty('required')){
-                if(keyData.required){
-                    if(input){
+        function checkRequire(input) {
+            if (keyData.hasOwnProperty('required')) {
+                if (keyData.required) {
+                    if (input) {
                         return true;
                     }
-                    else{
+                    else {
                         errArr.push(`${key} is required`);
                         return false;
                     }
                 }
-                if(!keyData.required){
+                if (!keyData.required) {
                     return true;
                 }
             }
-            else{
+            else {
                 return true;
             }
-            
+
         }
-        function checkRegex(input){
-            if(keyData.hasOwnProperty('regex')){
-                if(keyData.regex.test(input)){
+        function checkRegex(input) {
+            if (keyData.hasOwnProperty('regex')) {
+                if (keyData.regex.test(input)) {
                     return true;
                 }
-                else{
+                else {
                     errArr.push(`${key} is invalid`);
                     return false;
                 }
             }
-            else{
+            else {
                 return true;
             }
-            
+
         }
-        function checkString(input){
-            if(keyData.hasOwnProperty('string')){
-                if(typeof(input) === 'string'){
+        function checkString(input) {
+            if (keyData.hasOwnProperty('string')) {
+                if (typeof (input) === 'string') {
                     return true;
                 }
-                else{
+                else {
                     errArr.push(`${key} should be a string`);
                     return false;
                 }
             }
-            else{
+            else {
                 return true;
             }
-            
+
         }
-        function inputFrom(){
+        function inputFrom() {
             let inputVar: string;
-            if(keyData.hasOwnProperty('in')){
-                if(Object.keys(req.body).length){
+            if (keyData.hasOwnProperty('in')) {
+                if (Object.keys(req.body).length) {
                     inputVar = 'body';
                 }
-                if(Object.keys(req.query).length){
+                if (Object.keys(req.query).length) {
                     inputVar = 'query';
                 }
-                if(Object.keys(req.params).length){
+                if (Object.keys(req.params).length) {
                     inputVar = 'params';
                 }
 
                 const inputFrom = keyData.in[0];
 
-                if(inputFrom === 'query'){
+                if (inputFrom === 'query') {
                     return true;
                 }
-                if(inputVar === inputFrom){
+                if (inputVar === inputFrom) {
                     return true;
                 }
-                else{
+                else {
                     errArr.push(`value should be from ${inputFrom}`);
                     return false;
                 }
             }
-            else{
+            else {
                 return true;
             }
-            
+
         }
-        function checkIsObject(input){
-            if(keyData.hasOwnProperty('isObject')){
-                if(typeof(input) === 'object'){
+        function checkIsObject(input) {
+            if (keyData.hasOwnProperty('isObject')) {
+                if (typeof (input) === 'object') {
                     return true;
                 }
-                else{
+                else {
                     errArr.push(`${key} should be object`);
                     return false;
                 }
             }
-            else{
+            else {
                 return true;
             }
-            
-        }
-        function checkDefault(input){
 
-            if(keyData.hasOwnProperty('default')){
-                if(input !== null && typeof(input) === 'number'){
+        }
+        function checkDefault(input) {
+
+            if (keyData.hasOwnProperty('default')) {
+                if (input !== null && typeof (input) === 'number') {
                     return true;
                 }
-                if(input === null || input < 0 || input === 'undefined'){
+                if (input === null || input < 0 || input === 'undefined') {
                     input = keyData.default;
                     return true;
                 }
             }
-            else{
+            else {
                 return true;
             }
-            
+
         }
-        function checkNumber(input){
-            if(keyData.hasOwnProperty('number')){
-                if(typeof(input) === 'number'){
+        function checkNumber(input) {
+            if (keyData.hasOwnProperty('number')) {
+                if (typeof (input) === 'number') {
                     return true;
                 }
-                else{
+                else {
                     errArr.push(`${key} should be a number`);
                     return false;
                 }
             }
-            else{
+            else {
                 return true;
             }
-            
+
         }
-        function checkCustom(input){
-            if(keyData.hasOwnProperty('custom')){
-                keyData.custom.function(input);
+        function checkCustom(input) {
+            if (keyData.hasOwnProperty('custom')) {
+                keyData.custom(input);
                 return true;
             }
-            else{
+            else {
                 return true;
             }
         }
-        if(checkRequire(input) && checkString(input) && checkRegex(input) && inputFrom() && checkIsObject(input) && checkDefault(input) && checkNumber(input)){
-            console.log('Validation is Done');
-            if(checkCustom(input)){
-                console.log('Custom is validated');  
+        if (checkRequire(input) && checkString(input) && checkRegex(input) && inputFrom() && checkIsObject(input) && checkDefault(input) && checkNumber(input)) {
+            if (checkCustom(input)) {
+                // console.log('validation khatam');
             }
         }
-        console.log(input);
     });
-    if(errArr.length){
+    if (errArr.length) {
         errArr.forEach(element => console.log(element));
         next(errArr);
     }
-    else{
+    else {
+        console.log('validated Successfully');
         next();
     }
-}
+};

@@ -1,18 +1,5 @@
-export const validation = Object.freeze ({
+export const validation = Object.freeze({
     create: {
-        id: {
-            required: true,
-            string: true,
-            in:['body'],
-            errorMessage: 'Id is required',
-            custom: function(value) {
-                console.log('Value', value);
-                // throw {
-                //     error: 'Error Occured',
-                //     message: 'Message'
-                // }
-            }
-        },
         name: {
             required: true,
             string: true,
@@ -42,13 +29,13 @@ export const validation = Object.freeze ({
             number: true,
             in: ['query'],
             errorMessage: 'Limit is invalid',
-        } 
+        }
     },
     update: {
         id: {
             required: true,
             string: true,
-            in:['body'],
+            in: ['body'],
             errorMessage: 'Id is required'
         },
         dataToUpdate: {
@@ -56,8 +43,8 @@ export const validation = Object.freeze ({
             required: true,
             isObject: true,
             errorMessage: 'Data is required',
-            custom: function(dataToUpdate) {
-                console.log(`${dataToUpdate} is updated`)
+            custom: function (dataToUpdate) {
+                console.log('custom validated');
             },
         }
     }

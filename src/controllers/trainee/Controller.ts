@@ -1,101 +1,80 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
+import UserRepository from '../../repositories/user/UserRepository';
 
-class TraineeController{
+class TraineeController {
+    private userRepository = new UserRepository();
 
     static instance;
-    static getInstance = () => {
-    if(!TraineeController.instance)
-    {
-        TraineeController.instance= new TraineeController();
+    static getInstance = (): TraineeController => {
+        if (!TraineeController.instance) {
+            TraineeController.instance = new TraineeController();
+            return TraineeController.instance;
+        }
+        return TraineeController.instance;
+    }
+    create = (req: Request, res: Response) => {
+        const user = this.userRepository.create(req.body);
+        if (user) {
+            res.send({
+                status: 'OK',
+                message: 'Trainee added successfully'
+            });
+        }
+        else {
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+            };
+        }
+    }
+    delete = (req: Request, res: Response) => {
+        const user = this.userRepository.delete(req.params);
+        if (user) {
+            res.send({
+                status: 'OK',
+                message: 'Trainee deleted successfully'
+            });
+        }
+        else {
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+            };
+        }
+    }
+    update = (req: Request, res: Response) => {
+        this.userRepository.update(req.body).then((user) => {
+            if (user) {
+                res.send({
+                    status: 'OK',
+                    message: 'Trainee updated successfully'
+                });
+            }
+            else {
+                throw {
+                    error: 'Error Occured',
+                    message: 'Type of the entered data is not valid'
+                };
+            }
+        });
+    }
+    getAll = (req: Request, res: Response) => {
+        this.userRepository.list(req.query).then((getUsers) => {
+            if (getUsers) {
+                res.send({
+                    status: 'OK',
+                    message: 'Trainee list : ',
+                    data: {getUsers}
+                });
+            }
+            else {
+                throw {
+                    error: 'Error Occured',
+                    message: 'Type of the entered data is not valid'
+                };
+            }
+        });
 
     }
-    return TraineeController.instance;
-    }
-    create = (req: Request,res:Response)=>{
-        const { id, name} = req.body;
-        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
-            console.log({id}, {name});
-            res.send({
-                status: 'OK',
-                message: 'Trainee added successfully',
-                data: {id, name}
-            });
-        }
-        else{
-            throw {
-                error: 'Error Occured',
-                message: 'Type of the entered data is not valid'
-             }
-        }
-    }
-    delete = (req:Request, res:Response) => {
-        const { id, name} = req.body;
-        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
-            console.log({id}, {name});
-            res.send({
-                status: 'OK',
-                message: 'Trainee deleted successfully',
-                data: {id, name}
-            });
-        }
-        else{
-            throw {
-                error: 'Error Occured',
-                message: 'Type of the entered data is not valid'
-             }
-        }
-    }
-    update = (req:Request, res:Response) => {
-        const { id, name} = req.body;
-        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
-            console.log({id}, {name});
-            res.send({
-                status: 'OK',
-                message: 'Trainee updated successfully',
-                data: {id, name}
-            });
-        }
-        else{
-            throw {
-                error: 'Error Occured',
-                message: 'Type of the entered data is not valid'
-             }
-        }
-    }
-    getAll = (req:Request, res:Response) => {
-        const { id, name} = req.body;
-        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
-            console.log({id}, {name});
-            res.send({
-                status: 'OK',
-                message: 'Trainee list : ',
-                data: {id, name}
-            });
-        }
-        else{
-            throw {
-                error: 'Error Occured',
-                message: 'Type of the entered data is not valid'
-             }
-        }
-    }
-    getById = (req:Request, res:Response) => {
-        const { id, name} = req.body;
-        if((typeof(id) === 'number') &&  (typeof(name) === 'string')){
-            console.log({id}, {name});
-            res.send({
-                status: 'OK',
-                message: 'Trainee Found',
-                data: {id, name}
-            });
-        }
-        else{
-            throw {
-                error: 'Error Occured',
-                message: 'Type of the entered data is not valid'
-             }
-        }
-    }
-
 }
 export default TraineeController.getInstance();
