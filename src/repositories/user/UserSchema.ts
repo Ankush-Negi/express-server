@@ -3,8 +3,6 @@ import VersionableSchema from '../versionable/VersionableSchema';
 export default class UserSchema extends VersionableSchema {
     constructor(options: any) {
         const userSchema = {
-            // _id: String,
-            // originalId: String,
             email: String,
             name: String,
             role: String,

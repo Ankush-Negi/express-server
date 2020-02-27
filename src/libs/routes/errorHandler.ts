@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-function errHandler(err, req: Request, res: Response, next: NextFunction) {
+function errHandler (err, req: Request, res: Response, next: NextFunction) {
     if (Array.isArray(err)) {
         const errArr = [];
         err.forEach(element => {

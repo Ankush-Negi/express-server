@@ -12,8 +12,8 @@ class TraineeController {
         }
         return TraineeController.instance;
     }
-    create = (req: Request, res: Response) => {
-        const user = this.userRepository.create(req.body);
+    create = async (req: Request, res: Response) => {
+        const user = await this.userRepository.create(req.body);
         if (user) {
             res.send({
                 status: 'OK',
@@ -27,8 +27,8 @@ class TraineeController {
             };
         }
     }
-    delete = (req: Request, res: Response) => {
-        const user = this.userRepository.delete(req.params);
+    delete = async (req: Request, res: Response) => {
+        const user = await this.userRepository.delete(req.params);
         if (user) {
             res.send({
                 status: 'OK',
@@ -42,8 +42,8 @@ class TraineeController {
             };
         }
     }
-    update = (req: Request, res: Response) => {
-        this.userRepository.update(req.body).then((user) => {
+    update = async (req: Request, res: Response) => {
+         const user = await this.userRepository.update(req.body);
             if (user) {
                 res.send({
                     status: 'OK',
@@ -56,10 +56,9 @@ class TraineeController {
                     message: 'Type of the entered data is not valid'
                 };
             }
-        });
     }
-    getAll = (req: Request, res: Response) => {
-        this.userRepository.list(req.query).then((getUsers) => {
+    getAll = async (req: Request, res: Response) => {
+        const getUsers = await this.userRepository.list(req.query);
             if (getUsers) {
                 res.send({
                     status: 'OK',
@@ -73,8 +72,6 @@ class TraineeController {
                     message: 'Type of the entered data is not valid'
                 };
             }
-        });
-
+        }
     }
-}
 export default TraineeController.getInstance();

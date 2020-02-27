@@ -3,7 +3,7 @@ import seedData from './seedData';
 
 export default class Database {
     static open = (mongoURL: string) => {
-        return new Promise((resolve, reject) => {
+        return  new Promise((resolve, reject) => {
             mongoose
                 .connect(mongoURL, {
                     useNewUrlParser: true, useUnifiedTopology: true
