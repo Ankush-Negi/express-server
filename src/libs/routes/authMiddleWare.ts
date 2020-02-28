@@ -2,43 +2,36 @@ import { Request, Response, NextFunction } from 'express';
 import { hasPermission } from '../../../extraTs/utils';
 import * as jwt from 'jsonwebtoken';
 import config from '../../config/configuration';
+import UserRepository from '../../repositories/user/UserRepository';
+import IRequest from '../../libs/routes/IRequest';
 
-export default (module:string, permissionType: string) => (req: Request, res: Response, next: NextFunction) => {
-
-    try{
+export default (module: string, permissionType: string) => (req: IRequest, res: Response, next: NextFunction) => {
+    try {
 
         const token: string = req.headers.authorization;
         const { secretKey } = config;
         const decodeUser = jwt.verify(token, secretKey);
-        
-        if(!decodeUser){
-            next({
-                status: 403,
-                error: "Unauthorized Access",
-                message: "Unauthorized Access"
-            });
+        if (!decodeUser) {
+            throw new Error('Unauthorised User');
         }
-        console.log(decodeUser.role);
-        console.log(permissionType);
-        console.log(typeof(module));
-        if(!hasPermission( module, decodeUser.role, permissionType ) ) {
-            next({
-                error: "Unauthorized access",
-                status: 403,
-                message: "Permission Denied"
+        new UserRepository().findOne({ _id: decodeUser._id, email: decodeUser.email })
+            .then(user => {
+                if (user === null) {
+                    throw new Error('Email and Id are Invalid');
+                }
+                req.user = user;
+                if (!hasPermission(module, decodeUser.role, permissionType)) {
+                    throw new Error('Permission Denied');
+                }
+                next();
             });
-        }
-        next();
+
     }
-    catch(error){
+    catch (error) {
         next({
             message: error.message,
-            status : 403,
-            error: 'Unauthorised Access', 
+            status: 403,
+            error: 'Unauthorised Access',
         });
-        
     }
-    next();
-    
-
 }

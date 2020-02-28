@@ -7,6 +7,7 @@ const User = {
     name: 'Ankush Negi',
     email: 'ankush.negi@successive.tech',
     address: 'Noida',
+    role: 'head-trainer',
     dob: new Date('1998-04-25'),
     mobileNumber: 9557126356,
     hobbies: ['football'],

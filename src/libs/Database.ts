@@ -16,7 +16,6 @@ export default class Database{
                 else{
                     resolve();
                     seedData();
-
                     console.log("Successful connection with mongooseDB ");
                 }
             });

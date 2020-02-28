@@ -9,6 +9,7 @@ export default (validateHandler) => (req: Request,res: Response,next: NextFuncti
             return req[location][key];
         });
         const input = values[0];
+        console.log(input);
         function checkRequire(input){
             if(keyData.hasOwnProperty('required')){
                 if(keyData.required){
@@ -74,6 +75,9 @@ export default (validateHandler) => (req: Request,res: Response,next: NextFuncti
 
                 const inputFrom = keyData.in[0];
 
+                if(inputFrom === 'query'){
+                    return true;
+                }
                 if(inputVar === inputFrom){
                     return true;
                 }
@@ -81,7 +85,6 @@ export default (validateHandler) => (req: Request,res: Response,next: NextFuncti
                     errArr.push(`value should be from ${inputFrom}`);
                     return false;
                 }
-
             }
             else{
                 return true;
@@ -109,7 +112,7 @@ export default (validateHandler) => (req: Request,res: Response,next: NextFuncti
                 if(input !== null && typeof(input) === 'number'){
                     return true;
                 }
-                if(input === null || input < 0){
+                if(input === null || input < 0 || input === 'undefined'){
                     input = keyData.default;
                     return true;
                 }
@@ -149,6 +152,7 @@ export default (validateHandler) => (req: Request,res: Response,next: NextFuncti
                 console.log('Custom is validated');  
             }
         }
+        console.log(input);
     });
     if(errArr.length){
         errArr.forEach(element => console.log(element));

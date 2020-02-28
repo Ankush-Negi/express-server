@@ -3,7 +3,7 @@ import * as mongoose from "mongoose";
 export default class UserSchema extends mongoose.Schema{
     constructor (options: any){
         const userSchema = {
-            id: String,
+            _id: String,
             email: String,
             name: String,
             role: String,

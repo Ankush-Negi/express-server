@@ -1,4 +1,5 @@
 import UserModel from './UserModel';
+import * as mongoose from 'mongoose';
 
 export default class UserRepository {
     private userModel;
@@ -7,14 +8,16 @@ export default class UserRepository {
     }
 
     create = (data) => {
+        data._id = mongoose.Types.ObjectId().toHexString();
         return this.userModel.create(data);
     }
 
     find = (query) => {
-        return this.userModel.findOne(query);
+        return this.userModel.find(query);
     }
-    findById = (id) => {
-        return this.userModel.findById(id);
+    findOne =  (query) => {
+        const count= this.userModel.findOne(query);
+        return count;
     }
     update = (id, dataToUpdate) => {
         return this.userModel.findByIdAndUpdate(id, dataToUpdate).lean();
