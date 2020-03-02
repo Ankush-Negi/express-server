@@ -36,14 +36,12 @@ class UserController {
             if (!userData) {
                 throw new Error('Email is Invalid');
             }
-            console.log(password);
-            console.log(userData.password);
             const result = await bcrypt.compare(password, userData.password);
             console.log(result);
             if (result) {
-                const _id = userData.id;
+                const originalId = userData.originalId;
                 const role = userData.role;
-                const token = await jwt.sign({ email, _id, role }, config.secretKey, { expiresIn: (60 * 60) / 4 });
+                const token = await jwt.sign({ email, originalId, role }, config.secretKey, { expiresIn: (60 * 60) / 4 });
                 res.send({
                     message: 'Token Generated',
                     token

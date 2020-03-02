@@ -1,15 +1,11 @@
-import * as bycrpt from 'bcrypt';
 import UserRepository from '../repositories/user/UserRepository';
 import config from '../config/configuration';
 
 const userRepository = new UserRepository();
 export default async function seedData() {
 
-    const saltrounds = 10;
     const { password } = config;
-
-    const hashPassword = await bycrpt.hash(password, saltrounds);
-
+    const hashPassword = password;
     const User = {
         name: 'Ankush Negi',
         email: 'ankush.negi@successive.tech',

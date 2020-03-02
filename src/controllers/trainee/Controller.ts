@@ -43,35 +43,39 @@ class TraineeController {
         }
     }
     update = async (req: Request, res: Response) => {
-         const user = await this.userRepository.update(req.body);
-            if (user) {
-                res.send({
-                    status: 'OK',
-                    message: 'Trainee updated successfully'
-                });
-            }
-            else {
-                throw {
-                    error: 'Error Occured',
-                    message: 'Type of the entered data is not valid'
-                };
-            }
+        const user = await this.userRepository.update(req.body);
+        if (user) {
+            res.send({
+                status: 'OK',
+                message: 'Trainee updated successfully'
+            });
+        }
+        else {
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+            };
+        }
     }
     getAll = async (req: Request, res: Response) => {
         const getUsers = await this.userRepository.list(req.query);
-            if (getUsers) {
-                res.send({
-                    status: 'OK',
-                    message: 'Trainee list : ',
-                    data: {getUsers}
-                });
-            }
-            else {
-                throw {
-                    error: 'Error Occured',
-                    message: 'Type of the entered data is not valid'
-                };
-            }
+        if (getUsers) {
+            const { docCount, traineeList } = getUsers;
+            res.send({
+                status: 'OK',
+                message: 'Trainee list : ',
+                data: {
+                    total_user: docCount,
+                    traineeList
+                }
+            });
+        }
+        else {
+            throw {
+                error: 'Error Occured',
+                message: 'Type of the entered data is not valid'
+            };
         }
     }
+}
 export default TraineeController.getInstance();

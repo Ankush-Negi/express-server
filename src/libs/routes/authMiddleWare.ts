@@ -13,7 +13,7 @@ export default (module: string, permissionType: string) => async (req: IRequest,
         if (!decodeUser) {
             throw new Error('Invalid Token');
         }
-        const user = await new UserRepository().findOne({ _id: decodeUser.id, email: decodeUser.email });
+        const user = await new UserRepository().findOne({ _id: decodeUser.originalId, email: decodeUser.email });
                 if (user === null) {
                     throw new Error('Invalid Id and email');
                 }

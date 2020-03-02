@@ -9,16 +9,16 @@ export default class UserRepository extends VersionableRepository<IUserModel, mo
         super(UserModel);
     }
 
-    create = async (data) => {
-        return await super.create(data);
+    create = (data) => {
+        return super.create(data);
     }
 
-    update = async (data) => {
-        return await super.update(data);
+    update = (data) => {
+        return super.update(data);
     }
 
-    list = async (data) => {
-        return await super.list(data);
+    list = (data) => {
+        return super.list(data);
     }
 
     delete = (id) => {

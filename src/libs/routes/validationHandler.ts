@@ -6,7 +6,7 @@ export default (validateHandler) => (req: Request, res: Response, next: NextFunc
     configKey.forEach(key => {
         const keyData = validateHandler[key];
         const values = keyData.in.map((location) => {
-            return req[location][key];
+        return req[location][key];
         });
         const input = values[0];
         function checkRequire(input) {
@@ -108,11 +108,12 @@ export default (validateHandler) => (req: Request, res: Response, next: NextFunc
         function checkDefault(input) {
 
             if (keyData.hasOwnProperty('default')) {
-                if (input !== null && typeof (input) === 'number') {
+                if (input && typeof (input) === 'number') {
+
                     return true;
                 }
-                if (input === null || input < 0 || input === 'undefined') {
-                    input = keyData.default;
+                if (input === null || input < 0 || input === undefined) {
+                    req.query = { ...req.query, [key]: keyData.default};
                     return true;
                 }
             }
@@ -123,7 +124,11 @@ export default (validateHandler) => (req: Request, res: Response, next: NextFunc
         }
         function checkNumber(input) {
             if (keyData.hasOwnProperty('number')) {
-                if (typeof (input) === 'number') {
+                if (!isNaN(input)) {
+                    return true;
+                }
+
+                else if (input === undefined) {
                     return true;
                 }
                 else {
@@ -147,7 +152,7 @@ export default (validateHandler) => (req: Request, res: Response, next: NextFunc
         }
         if (checkRequire(input) && checkString(input) && checkRegex(input) && inputFrom() && checkIsObject(input) && checkDefault(input) && checkNumber(input)) {
             if (checkCustom(input)) {
-                // console.log('validation khatam');
+                // console.log('validation for Each element');
             }
         }
     });
