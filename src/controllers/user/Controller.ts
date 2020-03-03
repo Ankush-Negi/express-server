@@ -37,7 +37,6 @@ class UserController {
                 throw new Error('Email is Invalid');
             }
             const result = await bcrypt.compare(password, userData.password);
-            console.log(result);
             if (result) {
                 const originalId = userData.originalId;
                 const role = userData.role;
@@ -52,8 +51,20 @@ class UserController {
             }
         }
         catch (error) {
-            res.send('Error in token generation');
+            if (error.message) {
+                next({
+                    message: error.message,
+                    status: 403,
+                    error: 'Error in token Generation',
+                });
+            }
+            else {
+                next({
+                    error: 'Not Found'
+                });
+            }
         }
+
     }
 }
 export default UserController.getInstance();

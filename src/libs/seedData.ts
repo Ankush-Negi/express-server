@@ -16,12 +16,13 @@ export default async function seedData() {
         hobbies: ['football'],
         password: hashPassword
     };
-    const count = await userRepository.count();
-        if (count === 0) {
-            console.log('User is seeded');
-            return userRepository.create(User);
-        }
-        else {
-            console.log('User is already seeded');
-        }
+    const count = await userRepository.count({ deletedAt: undefined });
+    if (count === 0) {
+        console.log('User is seeded');
+        return userRepository.create(User);
+    }
+    else {
+        console.log('User is already seeded');
+        console.log('Number of total users: ', count);
+    }
 }

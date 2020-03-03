@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 export default (validateHandler) => (req: Request, res: Response, next: NextFunction) => {
-
     const errArr: string[] = [];
     const configKey = Object.keys(validateHandler);
     configKey.forEach(key => {

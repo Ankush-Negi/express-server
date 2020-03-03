@@ -3,8 +3,8 @@ import { traineeRouter } from './controllers/trainee';
 import { userRouter } from './controllers/user';
 
 const routers: Router = Router();
-routers
-    .use('/trainee', traineeRouter)
-    .use('/user', userRouter);
+
+routers.use('/trainee', traineeRouter);
+routers.use('/user', userRouter);
 
 export default routers;
