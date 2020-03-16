@@ -21,10 +21,7 @@ export default class VersionableRepository<
     const hashPassword: string = await bcrypt.hash(password, 10);
     return this.modelType.create({
       originalId: id,
-<<<<<<< HEAD
-=======
       _id: id,
->>>>>>> c653dda976db4e5546a442a52f7feb74a93f1b93
       password: hashPassword,
       createdBy: id,
       createdAt: Date.now(),
@@ -73,37 +70,12 @@ export default class VersionableRepository<
       }
     );
   }
-<<<<<<< HEAD
   async list(query, options) {
     if (options.sort === '' || options.sort === undefined) {
       options.sort = 'createdAt';
     }
     const traineeList = await this.modelType
       .find(query, {}, options).collation({locale: 'en'});
-=======
-  async list(data) {
-    const { sort, skip, limit, name, email } = data;
-    let del;
-    let regexValue;
-    if (name !== '' && name !== undefined) {
-      del = name;
-      regexValue = 'name';
-    }
-    if (email !== '' && email !== undefined) {
-      regexValue = 'email';
-      del = { ...del, email };
-    }
-    const traineeList = await this.modelType
-      .find({
-        [regexValue]: { $regex: `^${del}`, $options: 'i' },
-        deletedAt: undefined
-      })
-      .sort(sort)
-      .collation({ locale: 'en' })
-      .skip(skip)
-      .limit(limit)
-      .exec();
->>>>>>> c653dda976db4e5546a442a52f7feb74a93f1b93
     const docCount = traineeList.length;
     return { docCount, traineeList };
   }
