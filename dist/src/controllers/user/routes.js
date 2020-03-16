@@ -1,0 +1,91 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const Controller_1 = require("./Controller");
+const authMiddleWare_1 = require("../../libs/routes/authMiddleWare");
+const userRouter = express_1.Router();
+/**
+ * @swagger
+ * /User/me:
+ *   get:
+ *     tags:
+ *       - Users
+ *     name: me
+ *     summary: User own details
+ *     security:
+ *       - Bearer: []
+ *     consumes:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         schema:
+ *           $ref: '#/definitions/TraineeResponse'
+ *       403:
+ *         schema:
+ *           $ref: '#/definitions/Unauthorized'
+ *       500:
+ *         schema:
+ *           $ref: '#/definitions/500Response'
+ */
+userRouter.get('/me', authMiddleWare_1.default('getUsers', 'read'), Controller_1.default.me);
+/**
+ * @swagger
+ * /User/login:
+ *   post:
+ *     tags:
+ *       - Users
+ *     name: Login
+ *     summary: Logs in a user
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         in: body
+ *         schema:
+ *           type: object
+ *           properties:
+ *             email:
+ *               type: string
+ *             password:
+ *               type: string
+ *               format: password
+ *         required:
+ *           - email
+ *           - password
+ *     responses:
+ *       200:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               example: Token Generated
+ *             token:
+ *               example: hdbcuf38org39rh12_jhdcbwybuhbUBBbibiBiBmlgUdf0rh3fubwe30fj3-fh3-rvj3-vj3-vh0rivb04rvbnfufbsdhc sjkcn
+ *       403:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             error:
+ *               example: Error in token Generation
+ *             message:
+ *               example: Email or Password is Invalid
+ *             status:
+ *               example: 403
+ *             timestamp:
+ *               example: 2020-03-03T13:49:56.373Z
+ *       500:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             error:
+ *               example: Not Found
+ *             message:
+ *               example: Error
+ *             status:
+ *               example: 500
+ *             timestamp:
+ *               example: 2020-03-03T13:49:56.373Z
+ */
+userRouter.post('/login', Controller_1.default.login);
+exports.default = userRouter;
+//# sourceMappingURL=routes.js.map
