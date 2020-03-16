@@ -1,32 +1,29 @@
 import UserModel from './UserModel';
 import * as mongoose from 'mongoose';
+import VersionableRepository from '../versionable/VersionableRepository';
+import IUserModel from './IUserModel';
 
-export default class UserRepository {
-    private userModel;
-    constructor() {
-        this.userModel = UserModel;
-    }
+export default class UserRepository extends VersionableRepository<
+  IUserModel,
+  mongoose.Model<IUserModel>
+> {
+  constructor() {
+    super(UserModel);
+  }
 
-    create = (data) => {
-        data._id = mongoose.Types.ObjectId().toHexString();
-        return this.userModel.create(data);
-    }
+  create = data => {
+    return super.create(data);
+  };
 
-    find = (query) => {
-        return this.userModel.find(query);
-    }
-    findOne =  (query) => {
-        const count= this.userModel.findOne(query);
-        return count;
-    }
-    update = (id, dataToUpdate) => {
-        return this.userModel.findByIdAndUpdate(id, dataToUpdate).lean();
-    }
-    delete = (id) => {
-        return this.userModel.findByIdAndRemove(id);
-    }
-    count = () => {
-        return this.userModel.countDocuments();
-    }
-    
+  update = data => {
+    return super.update(data);
+  };
+
+  list = data => {
+    return super.list(data);
+  };
+
+  delete = data => {
+    return super.delete(data);
+  };
 }

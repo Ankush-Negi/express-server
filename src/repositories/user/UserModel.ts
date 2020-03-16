@@ -3,10 +3,14 @@ import IUserModel from './IUserModel';
 import UserSchema from './UserSchema';
 
 const userschema = new UserSchema({
-    collection: 'user',
-})
+  collection: 'user'
+});
 
-const UserModel: mongoose.Model<IUserModel> = 
-    mongoose.model<IUserModel>('user',userschema,'users',true);
+const UserModel: mongoose.Model<IUserModel> = mongoose.model<IUserModel>(
+  'user',
+  userschema,
+  'users',
+  true
+);
 
 export default UserModel;

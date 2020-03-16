@@ -4,7 +4,7 @@ const permissions: IPermissions = {
     all: ['head-trainer'],
     read : ['trainee', 'trainer'],
     write : ['trainer'],
-    delete: ['head-trainer', 'trainer'],
+    delete: ['trainer'],
         }
     };
 export { permissions };
