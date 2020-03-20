@@ -25,6 +25,7 @@ exports.default = (module, permissionType) => (req, res, next) => __awaiter(void
             _id: decodeUser.originalId,
             email: decodeUser.email
         });
+        req.user = user._id;
         if (user === null) {
             throw new Error('Invalid Id and email');
         }

@@ -21,7 +21,6 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 class VersionableRepository {
     constructor(modelType) {
         this.modelType = modelType;
@@ -33,10 +32,7 @@ class VersionableRepository {
     }
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = yield this.generateId();
-            const { password } = data, rest = __rest(data, ["password"]);
-            const hashPassword = yield bcrypt.hash(password, 10);
-            return this.modelType.create(Object.assign({ originalId: id, password: hashPassword, createdBy: id, createdAt: Date.now() }, rest));
+            return this.modelType.create(data);
         });
     }
     findOne(query) {
@@ -48,43 +44,35 @@ class VersionableRepository {
     }
     count(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.modelType.countDocuments(Object.assign({}, data));
+            return yield this.modelType.countDocuments(data);
         });
     }
     update(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id, dataToUpdate } = data;
-            const record = yield this.findOne({ originalId: id });
-            if (record === null || !record) {
-                throw new Error(`Record at id ${id} does not exist`);
-            }
-            yield this.delete(id);
-            const { __v, originalId } = record, rest = __rest(record, ["__v", "originalId"]);
-            const newId = yield this.generateId();
-            const d = Object.assign(Object.assign(Object.assign({ originalId }, rest), dataToUpdate), { _id: newId });
-            return yield this.modelType.create(Object.assign(Object.assign({}, d), { updatedAt: Date.now(), updatedBy: originalId }));
+            const { newData } = data, restAllData = __rest(data, ["newData"]);
+            this.delete(newData);
+            return yield this.modelType.create(Object.assign({}, restAllData));
         });
     }
     delete(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = data;
+            const { id, userId } = data;
             return yield this.modelType.update({
                 originalId: id,
-                deletedAt: undefined
+                deletedAt: undefined,
             }, {
-                deletedAt: new Date()
+                deletedAt: new Date(),
+                deletedBy: userId,
             });
         });
     }
     list(query, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (options.sort === '' || options.sort === undefined) {
-                options.sort = 'createdAt';
-            }
-            const traineeList = yield this.modelType
-                .find(query, {}, options).collation({ locale: 'en' });
-            const docCount = traineeList.length;
-            return { docCount, traineeList };
+            const list = yield this.modelType
+                .find(query, {}, options)
+                .collation({ locale: 'en' });
+            const listCount = list.length;
+            return { listCount, list };
         });
     }
 }

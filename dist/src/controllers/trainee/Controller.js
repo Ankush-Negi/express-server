@@ -21,56 +21,79 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const UserRepository_1 = require("../../repositories/user/UserRepository");
+const bcrypt = require("bcrypt");
 class TraineeController {
     constructor() {
         this.userRepository = new UserRepository_1.default();
         this.create = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const user = yield this.userRepository.create(req.body);
-            if (user) {
-                res.send({
-                    status: 'OK',
-                    message: 'Trainee added successfully'
-                });
-            }
-            else {
+            const { originalId } = req.user;
+            const userId = originalId;
+            console.log('Original id of controller', originalId, userId);
+            console.log('req user ki value in controller', req.user);
+            const id = yield this.userRepository.generateId();
+            const _a = req.body, { password } = _a, rest = __rest(_a, ["password"]);
+            const hashPassword = yield bcrypt.hash(password, 10);
+            const dataTocreate = Object.assign({ originalId: id, _id: id, password: hashPassword, createdBy: userId, createdAt: Date.now() }, rest);
+            const user = yield this.userRepository.create(dataTocreate);
+            if (!user) {
                 throw {
                     error: 'Error Occured',
                     message: 'Type of the entered data is not valid'
                 };
             }
+            res.send({
+                status: 'OK',
+                message: 'Trainee added successfully'
+            });
         });
         this.delete = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const user = yield this.userRepository.delete(req.params);
-            if (user) {
-                res.send({
-                    status: 'OK',
-                    message: 'Trainee deleted successfully'
-                });
-            }
-            else {
+            if (!user) {
                 throw {
                     error: 'Error Occured',
                     message: 'Type of the entered data is not valid'
                 };
             }
+            res.send({
+                status: 'OK',
+                message: 'Trainee deleted successfully'
+            });
         });
         this.update = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const user = yield this.userRepository.update(req.body);
-            if (user) {
-                res.send({
-                    status: 'OK',
-                    message: 'Trainee updated successfully'
-                });
+            const { id, dataToUpdate } = req.body;
+            const { originalId } = req.user;
+            const userId = originalId;
+            const record = yield this.userRepository.findOne({ originalId: id });
+            if (record === null || !record) {
+                throw new Error(`Record at id ${id} does not exist`);
             }
-            else {
+            const { __v, _id } = record, rest = __rest(record, ["__v", "_id"]);
+            const newData = { id, userId };
+            const data = {
+                newData,
+                rest,
+                dataToUpdate,
+                updatedAt: Date.now(),
+                updatedBy: userId
+            };
+            const user = yield this.userRepository.update(data);
+            if (!user) {
                 throw {
                     error: 'Error Occured',
                     message: 'Type of the entered data is not valid'
                 };
             }
+            res.send({
+                status: 'OK',
+                message: 'Trainee updated successfully'
+            });
         });
         this.getAll = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const _a = req.query, { skip, limit, sort, name, email } = _a, rest = __rest(_a, ["skip", "limit", "sort", "name", "email"]);
+            const _b = req.query, { skip, limit, name, email } = _b, rest = __rest(_b, ["skip", "limit", "name", "email"]);
+            let { sort } = rest;
+            if (sort === '' || sort === undefined) {
+                sort = 'createdAt';
+            }
             const options = { skip, limit, sort };
             let regexValue;
             let reg = {};
@@ -86,23 +109,21 @@ class TraineeController {
             }
             const query = Object.assign(reg, rest);
             const getUsers = yield this.userRepository.list(query, options);
-            if (getUsers) {
-                const { docCount, traineeList } = getUsers;
-                res.send({
-                    status: 'OK',
-                    message: 'Trainee list : ',
-                    data: {
-                        total_user: docCount,
-                        traineeList
-                    }
-                });
-            }
-            else {
+            if (!getUsers) {
                 throw {
                     error: 'Error Occured',
                     message: 'Type of the entered data is not valid'
                 };
             }
+            const { listCount, list } = getUsers;
+            res.send({
+                status: 'OK',
+                message: 'Trainee list : ',
+                data: {
+                    total_user: listCount,
+                    list
+                }
+            });
         });
     }
 }

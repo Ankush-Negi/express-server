@@ -2,7 +2,7 @@ import { Router } from 'express';
 import TraineeController from './Controller';
 import authMiddleWare from '../../libs/routes/authMiddleWare';
 import validationHandler from '../../libs/routes/validationHandler';
-import { validation } from '../user/validation';
+import { validation } from '../trainee/validation';
 
 const traineeRouter: Router = Router();
 

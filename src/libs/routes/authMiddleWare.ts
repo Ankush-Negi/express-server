@@ -21,10 +21,10 @@ export default (module: string, permissionType: string) => async (
       _id: decodeUser.originalId,
       email: decodeUser.email
     });
+    req.user = user._id;
     if (user === null) {
       throw new Error('Invalid Id and email');
     }
-    req.user = user;
     if (!hasPermission(module, decodeUser.role, permissionType)) {
       throw new Error('Permission Denied');
     }
