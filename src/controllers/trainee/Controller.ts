@@ -59,15 +59,9 @@ class TraineeController {
     const { id, dataToUpdate } = req.body;
     const { originalId } = req.user;
     const userId = originalId;
-    const record = await this.userRepository.findOne({originalId: id});
-    if (record === null || !record) {
-      throw new Error(`Record at id ${id} does not exist`);
-    }
-    const { __v, _id, ...rest } = record;
-    const newData = { id, userId };
     const data = {
-      newData,
-      rest,
+      id,
+      userId,
       dataToUpdate,
       updatedAt: Date.now(),
       updatedBy: userId

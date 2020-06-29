@@ -32,9 +32,15 @@ export default class VersionableRepository<
   }
 
   async update(data) {
-    const { newData, ...restAllData } = data;
-    this.delete(newData);
+    const { id, userId, ...restAllData } = data;
+    const record = await this.findOne({originalId: id});
+    if (record === null || !record) {
+      throw new Error(`Record at id ${id} does not exist`);
+    }
+    const { _v, _id, ...rest } = record;
+    this.delete({id, userId});
     return await this.modelType.create({
+      rest,
       ...restAllData,
     });
   }
