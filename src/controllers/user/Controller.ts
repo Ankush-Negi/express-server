@@ -26,6 +26,7 @@ class UserController {
       });
     }
   };
+
   login = async (req: IRequest, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
     try {

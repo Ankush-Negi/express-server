@@ -1,6 +1,5 @@
 import * as mongoose from 'mongoose';
 import IVersionableDocument from './IVersionableDocument';
-import * as bcrypt from 'bcrypt';
 
 export default class VersionableRepository<
   D extends IVersionableDocument,
@@ -16,17 +15,7 @@ export default class VersionableRepository<
   }
 
   async create(data) {
-    const id = await this.generateId();
-    const { password, ...rest } = data;
-    const hashPassword: string = await bcrypt.hash(password, 10);
-    return this.modelType.create({
-      originalId: id,
-      _id: id,
-      password: hashPassword,
-      createdBy: id,
-      createdAt: Date.now(),
-      ...rest
-    });
+    return this.modelType.create(data);
   }
 
   async findOne(query) {
@@ -39,60 +28,42 @@ export default class VersionableRepository<
   }
 
   async count(data) {
-    return await this.modelType.countDocuments({ ...data });
+    return await this.modelType.countDocuments(data);
   }
 
   async update(data) {
-    const { id, dataToUpdate } = data;
-    const record = await this.findOne({ originalId: id });
+    const { id, userId, ...restAllData } = data;
+    const record = await this.findOne({originalId: id});
     if (record === null || !record) {
       throw new Error(`Record at id ${id} does not exist`);
     }
-    await this.delete(id);
-    const { __v, originalId, ...rest } = record;
-    const newId = await this.generateId();
-    const d = { originalId, ...rest, ...dataToUpdate, _id: newId };
+    const { _v, _id, ...rest } = record;
+    this.delete({id, userId});
     return await this.modelType.create({
-      ...d,
-      updatedAt: Date.now(),
-      updatedBy: originalId
+      rest,
+      ...restAllData,
     });
   }
+
   async delete(data) {
-    const { id } = data;
+    const { id, userId } = data;
     return await this.modelType.update(
       {
         originalId: id,
-        deletedAt: undefined
+        deletedAt: undefined,
       },
       {
-        deletedAt: new Date()
+        deletedAt: new Date(),
+        deletedBy: userId,
       }
     );
   }
-  async list(data) {
-    const { sort, skip, limit, name, email } = data;
-    let del;
-    let regexValue;
-    if (name !== '' && name !== undefined) {
-      del = name;
-      regexValue = 'name';
-    }
-    if (email !== '' && email !== undefined) {
-      regexValue = 'email';
-      del = { ...del, email };
-    }
-    const traineeList = await this.modelType
-      .find({
-        [regexValue]: { $regex: `^${del}`, $options: 'i' },
-        deletedAt: undefined
-      })
-      .sort(sort)
-      .collation({ locale: 'en' })
-      .skip(skip)
-      .limit(limit)
-      .exec();
-    const docCount = traineeList.length;
-    return { docCount, traineeList };
+
+  async list(query, options) {
+    const list = await this.modelType
+      .find(query, {}, options)
+      .collation({locale: 'en'});
+    const listCount = list.length;
+    return { listCount, list };
   }
 }

@@ -19,8 +19,8 @@ export default class UserRepository extends VersionableRepository<
     return super.update(data);
   };
 
-  list = data => {
-    return super.list(data);
+  list = (query, options) => {
+    return super.list(query, options);
   };
 
   delete = data => {
